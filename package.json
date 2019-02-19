@@ -1,41 +1,27 @@
 {
-	"_args": [
-		[
-			"moonbase@1.7.4",
-			""
-		]
-	],
+  "name": "maintained-moonbase",
+  "version": "1.0.0",
+  "description": "Maintained Moonbase (Alpha Project)",
+  "main": "moonbase.coffee",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MaheshCasiraghi/moonbase.git"
+  },
+  "keywords": [
+    "Maintained",
+    "Moonbase"
+  ],
+  "author": "Mahesh Casiraghi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/MaheshCasiraghi/moonbase/issues"
+  },
+  "homepage": "https://github.com/MaheshCasiraghi/moonbase#readme",
 	"_development": true,
-	"_from": "moonbase@1.7.4",
-	"_id": "moonbase@1.7.4",
-	"_inBundle": false,
-	"_integrity": "sha1-6iv5xJFL29GXi1jAjW9eIqEmDB0=",
-	"_location": "/moonbase",
-	"_phantomChildren": {},
-	"_requested": {
-		"type": "version",
-		"registry": true,
-		"raw": "moonbase@1.7.4",
-		"name": "moonbase",
-		"escapedName": "moonbase",
-		"rawSpec": "1.7.4",
-		"saveSpec": null,
-		"fetchSpec": "1.7.4"
-	},
-	"_requiredBy": [
-		"#DEV:/"
-	],
-	"_resolved": "https://registry.npmjs.org/moonbase/-/moonbase-1.7.4.tgz",
-	"_spec": "1.7.4",
+	"_spec": "1.0",
 	"_where": "",
-	"author": {
-		"name": "Koen Bok"
-	},
 	"bin": {
 		"moonbase": "run.js"
-	},
-	"bugs": {
-		"url": "https://github.com/motif/moonbase/issues"
 	},
 	"dependencies": {
 		"autoprefixer": "^6.3.7",
@@ -88,21 +74,11 @@
 		"vinyl-named": "^1.1.0",
 		"webpack-stream": "^3.2.0"
 	},
-	"description": "Cactus through Gulp",
 	"directories": {
 		"doc": "docs"
-	},
-	"homepage": "https://github.com/motif/moonbase#readme",
-	"license": "MIT",
-	"main": "moonbase.coffee",
-	"name": "moonbase",
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/motif/moonbase.git"
 	},
 	"scripts": {
 		"postpublish": "git push",
 		"test": "echo \"Error: no test specified\" && exit 1"
-	},
-	"version": "1.7.4"
+	}
 }
