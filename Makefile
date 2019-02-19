@@ -1,31 +1,11 @@
-NODE_MODULES = ./node_modules
-NODE_BIN = $(NODE_MODULES)/.bin
+TEMPDIR := $(shell mktemp -d)
 
-.DEFAULT_GOAL := watch
+publish: git-check
+	npm publish
 
-
-### Moonbase
-
-npm:
-	@test -d ./node_modules || yarn
-
-clean:
-	$(NODE_BIN)/moonbase clean
-	rm -Rf ./node_modules
-
-build: npm
-	$(NODE_BIN)/moonbase build
-
-watch: npm
-	$(NODE_BIN)/moonbase watch
-
-
-### Optional
-
-upload: build
-	make git-check
-	# rsync ...
-
+test:
+	cd $(TEMPDIR); git clone https://github.com/motif/Moonbase.git my-project
+	cd $(TEMPDIR)/my-project; yarn; make
 
 ### Utilities
 
