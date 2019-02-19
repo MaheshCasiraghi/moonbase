@@ -1,22 +1,22 @@
 {
-  "name": "maintained-moonbase",
-  "version": "1.0.0",
-  "description": "Maintained Moonbase (Alpha Project)",
-  "main": "moonbase.coffee",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/MaheshCasiraghi/moonbase.git"
-  },
-  "keywords": [
-    "Maintained",
-    "Moonbase"
-  ],
-  "author": "Mahesh Casiraghi",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/MaheshCasiraghi/moonbase/issues"
-  },
-  "homepage": "https://github.com/MaheshCasiraghi/moonbase#readme",
+	"name": "maintained-moonbase",
+	"version": "1.0.1",
+	"description": "Maintained Moonbase (Alpha Project)",
+	"main": "moonbase.coffee",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/MaheshCasiraghi/moonbase.git"
+	},
+	"keywords": [
+		"Maintained",
+		"Moonbase"
+	],
+	"author": "Mahesh Casiraghi",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/MaheshCasiraghi/moonbase/issues"
+	},
+	"homepage": "https://github.com/MaheshCasiraghi/moonbase#readme",
 	"_development": true,
 	"_spec": "1.0",
 	"_where": "",
@@ -43,14 +43,14 @@
 		"gulp-gzip": "^1.4.2",
 		"gulp-htmlmin": "^4.0.0",
 		"gulp-if": "^2.0.0",
-		"gulp-livereload": "^3.8.0",
+		"gulp-livereload": "4.0.1",
 		"gulp-md5-assets": "1.0.1",
 		"gulp-minify-css": "^1.2.1",
 		"gulp-nunjucks-html": "^2.0.0",
 		"gulp-plumber": "^1.0.1",
 		"gulp-postcss": "^6.1.1",
 		"gulp-purifycss": "^0.2.0",
-		"gulp-sass": "^2.0.4",
+		"gulp-sass": "4.0.2",
 		"gulp-sourcemaps": "^1.6.0",
 		"gulp-stylelint": "^3.0.0",
 		"gulp-util": "^3.0.6",
