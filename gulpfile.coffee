@@ -86,6 +86,7 @@ catch e
 # Environments
 
 staging = environments.make("staging");
+production_live = environments.make("production_live");
 development = environments.development;
 production = environments.production;
 
@@ -109,7 +110,7 @@ nunjucksPipe = -> gulpnunjucks
 		environment: environment,
 		staging: staging(), 
 		development: development(), 
-		production: production() 
+		production: production() || production_live()
 		}
 	setUp: (env) ->
 		markdown.register(env, marked)
