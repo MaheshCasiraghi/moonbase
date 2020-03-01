@@ -1,5 +1,5 @@
    __  ___               __               
   /  |/  /__  ___  ___  / /  ___ ____ ___ 
  / /|_/ / _ \/ _ \/ _ \/ _ \/ _ `(_-</ -_)
-/_/  /_/\___/\___/_//_/_.__/\_,_/___/\__/ (Maintained)
-                                          
+/_/  /_/\___/\___/_//_/_.__/\_,_/___/\__/ (Maintained v.1.1.0)
+Forked and maintained by Mahesh Casiraghi. Originally written by Koen Bok.

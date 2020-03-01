@@ -7,6 +7,8 @@ https = require "https"
 ip = require "ip"
 gulp = require "gulp"
 gutil = require "gulp-util"
+debug = require "gulp-debug"
+runSequence = require "run-sequence"
 
 environments = require "gulp-environments"
 git = require "gulp-git"
@@ -166,6 +168,7 @@ gulp.task "static", ->
 	console.log("Running Static Task..")
 	return gulp.src(projectPath(paths.static, "**/*.*"))
 		.pipe(changed(buildPath(paths.static)))
+		.pipe(debug())
 		.pipe(gulp.dest(buildPath(paths.static)))
 		.pipe(livereload())
 
@@ -173,6 +176,7 @@ gulp.task "root", ->
 	console.log("Running Root Task..")
 	return gulp.src(projectPath(paths.root, "**/*.*"))
 		.pipe(changed(buildPath()))
+		.pipe(debug())
 		.pipe(gulp.dest(buildPath()))
 		.pipe(livereload())
 
@@ -183,6 +187,7 @@ gulp.task "pages", ->
 		.pipe(plumber())
 		.pipe(data((file) -> config.page?(file.path.replace(projectPath(paths.pages), ""), file, context)))
 		.pipe(nunjucksPipe())
+		.pipe(debug())
 		.pipe(gulp.dest(buildPath()))
 		.pipe(livereload())
 
@@ -211,6 +216,7 @@ gulp.task "scss", ->
 		.pipe(sass().on("error", sass.logError))
 		.pipe(postcss(processors))
 		.pipe(sourcemaps.write("."))
+		.pipe(debug())
 		.pipe(gulp.dest(buildPath(paths.scss)))
 		.pipe(livereload())
 
@@ -218,6 +224,7 @@ gulp.task "minifycss", ["scss"], ->
 	gulp.src(buildPath(paths.scss, "*.css"))
 		.pipe(plumber())
 		.pipe(minifycss())
+		.pipe(debug())
 		.pipe(gulp.dest(buildPath(paths.scss)))
 		
 gulp.task "configfile", ->
@@ -232,6 +239,7 @@ gulp.task "configfile", ->
 		gulp.src(projectPath(paths.javascript, "*.json"))
 			.pipe(plumber())
 			.pipe(named())
+			.pipe(debug())
 			.pipe(gulp.dest(buildPath(paths.javascript)))
 			.pipe(livereload())
 
@@ -246,6 +254,7 @@ gulp.task "javascript", ->
 		.pipe(plumber())
 		.pipe(named())
 		.pipe(webpack(webpackConfigJavaScript))
+		.pipe(debug())
 		.pipe(gulp.dest(buildPath(paths.javascript)))
 		.pipe(livereload())
 
@@ -255,57 +264,56 @@ gulp.task "imagemin", ->
 		.pipe(imagemin(imageminOptions)())
 		.pipe(gulp.dest(projectPath(paths.static)))
 
-gulp.task "handleassets", ["prehashingassets"], ->
+gulp.task "handleassets", (cb) ->
 	console.log("Handling Assets for in folder:")
 	console.log(buildPath())
+	console.log("Running Runsequence...")
+	runSequence("minifycss", "md5js", "md5svg", "md5png", "md5css", "md5ico", "minifyHtml", cb)
 
-gulp.task "prehashingassets", ["minifycss"], -> 
-	console.log("Hashing assets...")
-	gulp.start("hashingassets")
-
-gulp.task "hashingassets", ["minifyHtml"], -> 
-	console.log("Finishing pipeline...")
-
-gulp.task "minifyHtml", ["md5js"], -> 
+gulp.task "minifyHtml", -> 
 	console.log("Minifying Html...")
 	return gulp.src(buildPath("", "**/*.html"))
-		# .pipe(plumber())
 		.pipe(htmlmin({collapseWhitespace: true, removeComments: true}))
-		.pipe(gulp.dest(buildPath("")))
-
-gulp.task "md5js", ["md5css"], ->
-	console.log("Hashing JS...")
-	return gulp.src(buildPath("", "**/*/*.js"))
-		.pipe(md5(20, buildPath("", "**/*.html")))
-		.pipe(gulp.dest(buildPath("")))
-
-gulp.task "md5css", ["md5png"], ->
-	console.log("Hashing CSS...")
-	return gulp.src(buildPath("", "**/*/*.css"))
-		.pipe(md5(20, buildPath("", "**/*.html")))
-		.pipe(gulp.dest(buildPath("")))
-
-gulp.task "md5png", ["md5svg"], ->
-	console.log("Hashing PNG...")
-	return gulp.src(buildPath("", "**/*/*.png"))
-		.pipe(md5(20, buildPath("", "**/*.html")))
-		.pipe(gulp.dest(buildPath("")))
-
-gulp.task "md5svg", ["md5ico"], ->
-	console.log("Hashing SVG...")
-	return gulp.src(buildPath("", "**/*/*.svg"))
-		.pipe(md5(20, buildPath("", "**/*.html")))
+		.pipe(debug())
 		.pipe(gulp.dest(buildPath("")))
 
 gulp.task "md5ico", ->
 	console.log("Hashing ICO...")
 	return gulp.src(buildPath("", "**/*/*.ico"))
 		.pipe(md5(20, buildPath("", "**/*.html")))
+		.pipe(debug())
+		.pipe(gulp.dest(buildPath("")))
+
+gulp.task "md5css", ->
+	console.log("Hashing CSS...")
+	return gulp.src(buildPath("", "**/*/*.css"))
+		.pipe(md5(20, buildPath("", "**/*.html")))
+		.pipe(debug())
+		.pipe(gulp.dest(buildPath("")))
+
+gulp.task "md5png", ->
+	console.log("Hashing PNG...")
+	return gulp.src(buildPath("", "**/*/*.png"))
+		.pipe(md5(20, buildPath("", "**/*.html")))
+		.pipe(debug())
+		.pipe(gulp.dest(buildPath("")))
+
+gulp.task "md5svg", ->
+	console.log("Hashing SVG...")
+	return gulp.src(buildPath("", "**/*/*.svg"))
+		.pipe(md5(20, buildPath("", "**/*.html")))
+		.pipe(debug())
+		.pipe(gulp.dest(buildPath("")))
+
+gulp.task "md5js", ->
+	console.log("Hashing JS...")
+	return gulp.src(buildPath("", "**/*/*.js"))
+		.pipe(md5(20, buildPath("", "**/*.html")))
+		.pipe(debug())
 		.pipe(gulp.dest(buildPath("")))
 
 gulp.task "watch", ["build_unminified"], (cb) ->
 
-	# Wait 100ms before we actually reload
 	options = {debounceDelay: 100}
 
 	watch [
@@ -326,8 +334,6 @@ gulp.task "watch", ["build_unminified"], (cb) ->
 			gulp.start("pages")
 		setTimeout(run, 1000)
 		
-	# watch [projectPath(paths.coffeescript, "**/*.coffee")], options, (err, events) ->
-	# 	gulp.start("coffeescript")
 	watch [projectPath(paths.javascript, "**/*.js")], options, (err, events) ->
 		gulp.start("javascript")
 
@@ -348,12 +354,16 @@ gulp.task "server", (cb) ->
 			app.use(lr(port:livereloadPort))
 			app.use(express.static(buildPath()))
 
+			### Project Specific Development Server Logic Start ###
+			app.get('/items/*', (req, res) ->
+				res.redirect("/items?uuid=" + req.url.split("/items/")[1]);
+			)
+			### Project Specific Development Server Logic End ###
+
 			app.get('/*', (req, res) -> 
 				if 	req.url.indexOf('.') == -1?
 					res.sendFile buildPath() + '/' + req.originalUrl.slice(1) + '.html'
 			)
-
-			# console.log("Task are defined in: " + __dirname + "/gulpfile.coffee")
 
 			https.createServer({
 				key: fs.readFileSync(sslKey),
@@ -394,7 +404,13 @@ gulp.task "report", ["stylelint"], ->
 gulp.task "clean", ->
 	return del([buildPath()])
 
-gulp.task("build", ["pages", "static", "root", "handleassets", "configfile", "javascript"])
-gulp.task("build_test", ["pages", "static", "root", "handleassets"])
-gulp.task("build_unminified", ["pages", "static", "root", "scss", "configfile", "javascript"])
+gulp.task "build", (cb) ->
+	runSequence("pages", "static", "root", "javascript", "handleassets", "configfile", cb)
+
+gulp.task "build_test", (cb) ->
+	runSequence("pages", "static", "root", "handleassets", cb)
+
+gulp.task "build_unminified", (cb) ->
+	runSequence("pages", "static", "root", "javascript", "scss", "configfile", cb)
+
 gulp.task("default", ["server"])
